@@ -67,10 +67,12 @@ namespace EduDataAPI.Repositories
         {
             var parameter = new SqlParameter("@Id", id);
 
-            return await _context.Usuarios
+            var usuarios = await _context.Usuarios
                 .FromSqlRaw("EXEC sp_BuscarUsuarioPorId @Id", parameter)
                 .AsNoTracking()
-                .FirstOrDefaultAsync();
+                .ToListAsync();
+
+            return usuarios.FirstOrDefault();
         }
     }
 }
