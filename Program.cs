@@ -1,15 +1,15 @@
-using EduDataAPI;
+using EduDataAPI.Data;
 using EduDataAPI.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<UsuarioRepository>();
+builder.Services.AddSingleton<Database>();
+builder.Services.AddScoped<EstudianteRepository>();
+builder.Services.AddScoped<ProfesorRepository>();
+builder.Services.AddScoped<CursoRepository>();
+builder.Services.AddScoped<EstudianteCursoRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,7 +19,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    //app.UseSwaggerUI();
+
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
